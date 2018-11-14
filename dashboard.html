@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta content="en-us" http-equiv="Content-Language">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Dashboard</title>
+<link rel="stylesheet" type="text/css" href="dashboard.css">
+</head>
+
+<body onload="GetValues();">
+<p>
+	Laptops on hand: <input id="currentstock" value="100" readonly>
+	<!--button type="button" onclick="ShowOnHandList();" > SHOW ME THE LIST</button-->
+</p>
+
+<P>
+    Laptops that are due as of today: <input id="duetoday" value="100" readonly>
+    <button type="button" onclick="ShowDueTodayList();"> SHOW ME THE LIST</button>
+</P>
+
+<P>
+	Laptops that are due later on: <input id="duelater" value="100" readonly>
+	<button type="button" onclick="ShowDueLaterList();"> SHOW ME THE LIST </button>
+</P>
+<P> 
+	<button id="btnrqstlp" type="button" > REQUEST LAPTOP</button>
+	<button id="btnapprovelp" type="button" onclick="ApproveLaptop();"> APPROVE / REJECT LAPTOP</button>
+	<button id="btnissuelp" type="button" onclick="IssueLaptop();"> ISSUE LAPTOP</button>
+	<button id="btnclctlp" type="button" onclick="CollectLaptop();"> COLLECT LAPTOP</button>
+</P>
+<div id="Info4user">
+	
+</div>
+
+
+
+<!-- The Request Laptop Modal -->
+<div id="RequestModal" class="RequestModal">
+
+  <!-- Modal content -->
+  <div class="Request-Content">
+  	<span class="RequestClose">&times;</span>
+    <p id="greetingonrequestmodal">Pick Your Desired Laptop</p>
+    <div id="StockList">
+    </div>
+    
+
+  </div>
+
+</div>
+
+<!-- The Request Laptop Modal -->
+<div id="RequestedModal" class="RequestedModal">
+
+  <!-- Modal content -->
+  <div class="Requested-Content">
+  	<span class="RequestedClose">&times;</span>
+    <p>Now that you have chosen a Laptop, Feed in further required details</p>
+    <div id="reasonsetc">
+    	<form >
+			<p>Justification? : 	<input id="justification" name="justification" type="text"> </p>
+			<p>Comitted Return Date  : 	<input id="committedrtndate" name="committedrtndate" type="text"> </p>
+			<p>Your Phone Extension: <input id="phonext" name="phonext" type="text"> </p>
+			<button type="button" onclick="RecordTheRequest();" > SUBMIT NOW</button>
+		</form>
+    </div>
+    
+
+  </div>
+
+</div>
+
+<div id="ApprovalModal" class="ApprovalModal">
+
+  <!-- Modal content -->
+  <div class="Approve-Content">
+  	<span class="ApproveClose">&times;</span>
+    <p>In this window you could either approve or reject an Laptop Request</p>
+    <div id="ApproveList">
+    </div>
+    
+
+  </div>
+
+</div>
+
+<div id="IssueModal" class="IssueModal">
+
+  <!-- Modal content -->
+  <div class="Issue-Content">
+    <span class="IssueClose">&times;</span>
+    <p>In this window you could issue Laptops to the Requesters</p>
+    <div id="IssueList">
+    </div>
+    
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript" src="dashboard.js">
+	
+</script>
+</body>
+
+</html>

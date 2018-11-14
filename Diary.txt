@@ -1,0 +1,11 @@
+So far    : Developed screen design and developed back end tables and test data. Developed required back end coding. Setup development environment. Tried to co-create with the help of Prabs using his university students.....
+18/8/2018 : Done coding for login page...except CSS
+19/8/2018 : Working on storing sesssion variables
+21/8/2018 : Working on ensuring DB Connection settings are stored only in one file
+21/8/2018 : Working on ensuring data for Dashboard is retrieved and displayed.
+22/8/2018 : Working on Request Laptop Page ie separated JS and CSS into respective files : 2 hrs
+22/8/2018 : Working on Request Laptop Page : 1 hr
+23/8/2018 : Working on Request Laptop Page : 0.25 Hr
+29/8/2018 : Working on Request Laptop Page Javascript testing: 1 hr
+30/8/2018 : Working on Request Laptop Page PHP file ie laptoplist4request.php. Researched how to build a dynamic HTML form in PHP that would later on be submitted: 1 hr
+4/9/2018  : Working on request laptop page PHP file ie laptoplist4request.php : 2 hr

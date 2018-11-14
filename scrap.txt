@@ -1,0 +1,4 @@
+  /*   if(this.responseText == "User Name and Password Validated. You may proceed") {
+                        window.open("http://192.168.16/LTS/dashboard.html","_self");
+                    }
+                    */

@@ -1,0 +1,286 @@
+A maior plataforma de estudos do Brasil
+EntrarCriar perfil grátis
+11PHP 5 Power Programming
+720 pág.
+11PHP 5 Power Programming
+Disciplina:
+Tecnologia da Informação1.668 materiais • 12.801 seguidores
+ VISUALIZAR ARQUIVO COMPLETO
+
+Enviado por
+Gislaine
+ Denunciar
+PRÉ-VISUALIZAÇÃO50 PÁGINAS
+5);
+
+$mysqli->real_connect(&quot;localhost&quot;, &quot;test&quot;, &quot;&quot;, &quot;world&quot;);
+if (mysqli_connect_errno) {
+die(&quot;mysqli_connect failed: &quot; . mysqli_connect_error());
+}
+print &quot;connected to &quot; . $mysqli->host_info . &quot;\n&quot;;
+$mysqli->close();
+
+The
+
+mysqli_options
+
+functions allow you to set the options shown in Table 6.2.
+
+Table 6.2
+
+mysqli_options
+
+Constants
+
+6.2.5 Buffered Versus Unbuffered Queries
+
+The MySQL client has two types of queries: buffered and unbuffered queries.
+
+Buffered queries
+
+will retrieve the query results and store them in memory
+on the client side, and subsequent calls to get rows will simply spool through
+local memory.
+
+Option Description
+
+MYSQLI_OPT_CONNECT_TIMEOUT
+
+MYSQLI_OPT_LOCAL_INFILE
+MYSQLI_INIT_CMD
+
+MYSQLI_READ_DEFAULT_FILE
+MYSQLI_READ_DEFAULT_GROUP
+
+Specifies the connection timeout in seconds
+Enables or disables the use of the
+
+LOAD
+
+LOCAL
+INFILE
+
+command
+Specifies the command that must be executed
+after connect
+Specifies the name of the file that contains named
+options
+Reads options from the named group from my.cnf
+(or the file specified with MYSQLI_READ_
+DEFAULT_FILE)
+
+Gutmans_ch06 Page 153 Thursday, September 23, 2004 2:43 PM
+
+154 Databases with PHP 5 Chap. 6
+
+Buffered queries have the advantage that you can seek in them, which
+means that you can move the \u201ccurrent row\u201d pointer around in the result set
+freely because it is all in the client. Their disadvantage is that extra memory is
+required to store the result set, which could be very large, and that the PHP
+function used to run the query does not return until all the results have been
+retrieved.
+
+Unbuffered queries
+
+, on the other hand, limit you to a strict sequential
+access of the results but do not require any extra memory for storing the
+entire result set. You can start fetching and processing or displaying rows as
+soon as the MySQL server starts returning them. When using an unbuffered
+result set, you have to retrieve all rows with mysqli_fetch_row or close the
+result set with mysqli_free_result before sending any other command to the
+server.
+
+Which type of query is best depends on the situation. Unbuffered queries
+save you a lot of temporary memory when the result set is large, and if the
+query does not require sorting, the first row of results will be available in PHP
+while the MySQL database is actually still processing the query. Buffered que-
+ries are convenient because of the seeking feature; it could provide an overall
+speedup. Because each individual query would finish faster, the mysqli exten-
+sion would drain the result set immediately and store it in memory instead of
+keeping the query active while processing PHP code. With some experience
+and relentless benchmarking, you will figure out what is best for you.
+
+Another limitation for unbuffered queries is that you will not be able to
+send any command to the server unless all rows are read or the result set is
+freed by mysqli_free_result.
+
+6.2.6 Queries
+This section describes functions and methods for executing queries see Table 6.3).
+
+Table 6.3 mysqli Query Functions
+
+Function Name Description
+mysqli_query(...) Sends a query to the database and returns
+
+a result object. Parameters:
+\u2022 connection (function only)
+\u2022 query (string)
+\u2022 mode (buffered or unbuffered)
+
+mysqli_multi_query(...)
+$mysqli->multi_query(...)
+
+Sends and processes multiple queries at
+once. Parameters:
+\u2022 connection object (function only)
+\u2022 query (string)
+
+Gutmans_ch06 Page 154 Thursday, September 23, 2004 2:43 PM
+
+6.2 MySQL 155
+
+The mysqli_query() function returns a result set object. On failure, use
+the mysqli_error() function or the $conn->error property to determine the
+cause of the failure:
+
+<?php
+
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;test&quot;, &quot;&quot;, &quot;world&quot;);
+
+$result = $conn->query(&quot;SELECT Name FROM City&quot;);
+while ($row = $result->fetch_row()) {
+print $row[0] . &quot;<br>\n&quot;;
+}
+$result->free();
+$conn->close();
+
+After the query has been executed, memory on the client side is allocated
+to retrieve the complete result set. To use unbuffered resultset, you have to
+specify the optional parameter MYSQLI_USE_RESULT:
+
+<?php
+
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;test&quot;, &quot;&quot;, &quot;world&quot;);
+
+$result = $conn->query(&quot;SELECT Name FROM City&quot;, MYSQLI_USE_RESULT);
+while ($row = $result->fetch_row()) {
+print $row[0] . &quot;<br>\n&quot;;
+}
+$result->free();
+$conn->close();
+
+6.2.7 Multi Statements
+The mysqli extension enables you to send multiple SQL statements in one
+function call by using mysqli_multi_query. The query string contains one or
+more SQL statements that are divided by a semicolon at the end of each state-
+ment. Retrieving result sets from multi statements is a little bit tricky, as the
+following example demonstrates:
+
+<?php
+
+$conn = mysqli_connect(&quot;localhost&quot;, &quot;test&quot;, &quot;&quot;, &quot;world&quot;);
+
+$query = &quot;SELECT Name FROM City&quot;;
+$query .= &quot;SELECT Country FROM Country&quot;;
+
+if ($conn->multi_query($query)) {
+do {
+if ($result = $mysqli->store_result()) {
+while ($row = $result->fetch_row()) {
+printf(&quot;Col: %s\n&quot;, $row[0];
+}
+$result->close();
+}
+
+Gutmans_ch06 Page 155 Thursday, September 23, 2004 2:43 PM
+
+156 Databases with PHP 5 Chap. 6
+
+} while ($conn->next_result());
+}
+$conn->close();
+
+6.2.8 Fetching Modes
+There are three ways to fetch rows of results, as in the old mysql extension: as
+an enumerated array, as an associative array, or as an object (see Table 6.4).
+
+Table 6.4 mysqli Fetch Functions
+
+6.2.9 Prepared Statements
+One of the major advantages of the mysqli extension as compared to the mysql
+extension are prepared statements. Prepared statements provide develop-
+ers with the ability to create queries that are more secure, have better perfor-
+mance, and are more convenient to write.
+
+There are two types of prepared statements: one that executes data
+manipulation statements, and one that executes data retrieval statements.
+Prepared statements allow you to bind PHP variables directly for input and
+output.
+
+Creating a prepared statement is simple. A query template is created
+and sent to the MySQL server. The MySQL server receives the query tem-
+plate, validates it to ensure that it is well-formed, parses it to ensure that it is
+meaningful, and stores it in a special buffer. It then returns a special handle
+that can later be used to reference the prepared statement.
+
+6.2.9.1 Binding Variables There are two types of bound variables: input
+variables that are bound to the statement, and output variables that are
+bound to the result set. For input variables, you need to specify a question
+mark as a placeholder in your SQL statement, like this:
+
+SELECT Id, Country FROM City WHERE City=?
+INSERT INTO City (Id, Name) VALUES (?,?)
+
+Function Name Description
+mysqli_fetch_row(...)
+$mysqli->fetch_row()
+
+Sends a query to the database and buffers
+the results. Its parameter is the result object
+(function only).
+
+mysqli_fetch_assoc(...)
+$result->fetch_assoc()
+
+Fetches all the results from the most recent
+query on the connection and stores them in
+memory. Its parameter is connection resource
+(function only).
+
+mysqli_fetch_object(...)
+$result->fetch_object()
+
+Fetches a row into an object. Its parameter is
+the result object (function only).
+
+Gutmans_ch06 Page 156 Thursday, September 23, 2004 2:43 PM
+
+6.2 MySQL 157
+
+Output variables can be bound directly to the columns of the result set.
+The procedure for binding input and output variables is slightly different.
+Input variables must be bound before executing a prepared statement, while
+output variables must be bound after executing the prepared statement.
+
+The process for input variables is as follows:
+
+1. Preparing (parsing)
+...
+41
+42
+43
+44
+45
+...
+
+720 pág.
+Crie seu perfil para
+ver o material completo
+Junte-se a 13 milhões de estudantes.
+
+FURG
+
+USP
+
+ESTÁCIO
+
+UFRJ
+
+UNIP
++2.700
+UNIVERSIDADES
+É rápido, grátis e seguro.
+FacebookGoogle
+Você estará aceitando os Termos de uso e Política de privacidade.
+Já tem cadastro? Entrar
+Crie seu perfil para visualizar este e milhares de outros materiais de estudo!CADASTRARENTRAR

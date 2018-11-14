@@ -1,0 +1,19 @@
+* How to form process in HTML? if that HTML was an output from a PHP file. Ex, laptoplist4request.php will return a dynamically buit form...now how will dashboard.html has to process as to find which laptop was requested?
+* Do Field level validation
+* Give a professional appeal using CSS. Require site logo ie the one displays on browser tab. Requires Trivent Logo.
+* Avoid page redirection using hardcoded values....deployment will be difficult
+* Create user creation pages and do password hashing.
+* on a 2nd thought, give user registration page instead of user creation page
+* Make use of Stored Procedures for back end insert etc especially to record the requested Laptop
+* Make use of JSON for data exchange between JS and PHP
+* Requires pagenation for presenting list of available laptops in the request laptop page
+* Try using Jquery instead of low level programming
+* Once a laptop is requested , it should not appear in the Request list
+* Request Laptop button should be greyed out ie it should not be clicable if the user has already requested a laptop
+* If a loged in user has pending laptop request then the REQUEST button should not be enabled
+* Do we have to record reason for rejection of laptops?
+* Develop a marketing collateral speaking about the benefits of using the system and sell as recurring monthly service
+
+Done
+======
+* Master table shall have a column as "status" with possible values are "Available", "Requested", "Approved", "Rejected", "Issued"
